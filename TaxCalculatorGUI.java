@@ -4,9 +4,9 @@ import java.awt.event.*;
 
 public class TaxCalculatorGUI extends JFrame implements ActionListener {
 
-    private JTextField incomeField, taxField, recommendField;
+    private JTextField incomeField, taxField, recommendField, expenditureField;
     private JButton calculateButton;
-    private JLabel incomeLabel, taxLabel;
+    private JLabel incomeLabel, taxLabel, expenditureLabel;
     private JRadioButton oldRadio, newRadio;
     private ButtonGroup group;
     private JLabel recommendLabel;
@@ -23,6 +23,9 @@ public class TaxCalculatorGUI extends JFrame implements ActionListener {
         incomeField = new JTextField();
         incomeField.setPreferredSize(new Dimension(30, 20));
         
+	  expenditureLabel = new JLabel("Enter your Expenditure (RS) :");
+        expenditureField = new JTextField();
+        expenditureField.setPreferredSize(new Dimension(30, 20));
 	  
 	  recommendLabel = new JLabel("Suggestions :");
 	  
@@ -46,6 +49,8 @@ public class TaxCalculatorGUI extends JFrame implements ActionListener {
         add(incomeField);
         add(oldRadio);
         add(newRadio);
+	  add(expenditureLabel);
+	  add(expenditureField);
         add(taxLabel);
         add(taxField);
 	  
@@ -61,8 +66,10 @@ public class TaxCalculatorGUI extends JFrame implements ActionListener {
         // Get inputs from user
         double income = Double.parseDouble(incomeField.getText());
         boolean useOldParameters = oldRadio.isSelected();
-
-	  double r = (income / 10000)+0.5;
+	
+	  double expenditure = Double.parseDouble(expenditureField.getText());
+        double amount = income - expenditure ;
+	  double r = (amount / 10000)-0.5;
 	  double roundedValue = Math.round(r);
 	  double newIncome = roundedValue*10000;
 
@@ -98,28 +105,28 @@ public class TaxCalculatorGUI extends JFrame implements ActionListener {
         // Calculate tax
         double tax = 0.0;
         if (useOldParameters) {
-            if (income <= 250000) {
+            if (amount <= 250000) {
                 tax = 0;
-            } else if (income <= 500000) {
-                tax = (income - 250000) * 0.05;
-            } else if (income <= 1000000) {
-                tax = 12500 + (income - 500000) * 0.2;
+            } else if (amount <= 500000) {
+                tax = (amount - 250000) * 0.05;
+            } else if (amount <= 1000000) {
+                tax = 12500 + (amount - 500000) * 0.2;
             } else {
-                tax = 112500 + (income - 1000000) * 0.3;
+                tax = 112500 + (amount - 1000000) * 0.3;
             }
         } else {
-            if (income <= 300000) {
+            if (amount <= 300000) {
                 tax = 0;
-            } else if (income <= 600000) {
-                tax = (income - 300000) * 0.05;
-            } else if (income <= 900000) {
-                tax = 15000 + (income - 600000) * 0.1;
-            } else if (income <= 1200000) {
-                tax = 45000 + (income - 900000) * 0.15;
-            } else if (income <= 1500000) {
-                tax = 82500 + (income - 1200000) * 0.2;
+            } else if (amount <= 600000) {
+                tax = (amount - 300000) * 0.05;
+            } else if (amount <= 900000) {
+                tax = 15000 + (amount - 600000) * 0.1;
+            } else if (amount <= 1200000) {
+                tax = 45000 + (amount - 900000) * 0.15;
+            } else if (amount <= 1500000) {
+                tax = 82500 + (amount - 1200000) * 0.2;
             } else {
-                tax = 142500 + (income - 1500000) * 0.3;
+                tax = 142500 + (amount - 1500000) * 0.3;
             }
         }
 
